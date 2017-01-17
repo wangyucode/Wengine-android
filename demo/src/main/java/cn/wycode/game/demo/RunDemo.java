@@ -30,12 +30,12 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
     private Rect bg_rect, draw_ground_rect, ground_rect, draw_bg_rect;
     private int bg_left, ground_left;
     private Timer bg_timer, obs_timer, coin_timer;
-    private int bg_seed = 50;
+    private int bg_seed = 80;
     private int ground_seed = bg_seed * 2;
-    private int jumpSpeed = -100;
+    private int jumpSpeed = -200;
 
-    private int manHeight = 60;
-    private int manWidth = 20;
+    private int manHeight = 120;
+    private int manWidth = 40;
 
     private JumpAnimation jumpAnimation;
     private MoveAnimation moveAnimation;
@@ -57,7 +57,7 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
     public void load() {
         bm_bg = texture.loadTexture("img/run_bg.png");
         bm_ground = texture.loadTexture("img/ground.png");
-        bm_man = texture.loadTexture("img/man.png");
+        bm_man = texture.loadTexture("img/man1.png");
 
         bg_rect = new Rect(0, 0, ScreenInfo.width, ScreenInfo.height * 2 / 3);
         draw_bg_rect = new Rect(bg_left, 0, ScreenInfo.width, ScreenInfo.height * 2 / 3);
@@ -86,7 +86,7 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
         jumpAnimation.setStateListener(this);
 
         Bitmap[] runFrames = new Bitmap[]{texture.loadTexture("img/man1.png"), texture.loadTexture("img/man2.png")};
-        FrameAnimation frameAnimation = new FrameAnimation(runFrames, 100);
+        FrameAnimation frameAnimation = new FrameAnimation(runFrames, 500);
         man.addAnimation(frameAnimation);
         addSprite(man);
 
