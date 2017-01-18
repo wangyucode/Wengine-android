@@ -82,6 +82,7 @@ public class BaseSprite implements SpriteAction {
 
     public void addAnimation(BaseAnimation a) {
         a.setDone(false); //call start
+        a.resetTimer();
         animations.add(a);
     }
 

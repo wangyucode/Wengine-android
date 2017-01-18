@@ -22,6 +22,12 @@
             android:layout_height="wrap_content"
             android:text="打砖块" />
         <Button
+            android:id="@+id/btn_bird"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="飞飞鸟"/>
+        <Button
             android:id="@+id/btn_run"
             android:onClick="onClick"
             android:layout_width="wrap_content"

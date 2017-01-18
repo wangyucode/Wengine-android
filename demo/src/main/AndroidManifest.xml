@@ -10,8 +10,8 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".BrickDemo"/>
-
         <activity android:name=".RunDemo"/>
+        <activity android:name=".BirdDemo"/>
 
         <activity android:name=".MainActivity">
             <intent-filter>

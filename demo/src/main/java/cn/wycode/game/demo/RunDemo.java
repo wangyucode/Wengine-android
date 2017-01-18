@@ -122,7 +122,7 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
 
 
         moveAnimation = new MoveAnimation(180, ground_seed);
-        if (obs_timer.getElapseNotReset() > 2000 + random.nextInt(1000)) {
+        if (obs_timer.getElapseNotReset() > 4000+ random.nextInt(4000)) {
             BaseSprite obstacle = null;
             for (BaseSprite s : spriteRecyclePool) {
                 if ("obstacle".equals(s.getName())) {

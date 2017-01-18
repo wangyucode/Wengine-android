@@ -35,6 +35,10 @@ public abstract class BaseAnimation {
 
     public abstract void adjustChanges(BaseSprite sprite);
 
+    public void resetTimer(){
+        animTimer.reset();
+    }
+
     public boolean isDone() {
         return isDone;
     }

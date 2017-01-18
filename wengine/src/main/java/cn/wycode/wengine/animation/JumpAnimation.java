@@ -8,7 +8,7 @@ import cn.wycode.wengine.sprite.BaseSprite;
  */
 
 public class JumpAnimation extends BaseAnimation {
-    private final float g = 60;
+    private float g = 200;
     private float v;
     private float groundY;
 
