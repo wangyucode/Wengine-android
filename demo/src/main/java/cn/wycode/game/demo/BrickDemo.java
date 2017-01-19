@@ -30,9 +30,9 @@ public class BrickDemo extends Wengine {
 
     private int lastReach = BaseSprite.BOUND_NULL;
 
-    private int ballSize = 30;
-    private int brickHeight = 40;
-    private int batWidth = 120;
+    private int ballSize = 10;
+    private float brickHeight = 20;
+    private int batWidth = 80;
 
     private Bitmap bm_ball, bm_brick, bm_bat     ;
 
@@ -52,9 +52,15 @@ public class BrickDemo extends Wengine {
 
         int row = 8;
         int column = 6;
-        float gap = 4;
+        float gap = 2; //(dp)
         float w = (ScreenInfo.width - ((column + 1) * gap)) / column;
+
+        //根据屏幕宽度修正gap
+        gap = ScreenInfo.dp2px(gap);
         gap += (ScreenInfo.width - w * column - gap * (column + 1)) / (column + 1);
+        gap = ScreenInfo.dp2px(gap);
+
+        brickHeight = ScreenInfo.dp2px(brickHeight);
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
                 BaseSprite brick = new BaseSprite(bm_brick, gap + (w + gap) * j, gap + (brickHeight + gap) * i, w, brickHeight);
@@ -64,7 +70,9 @@ public class BrickDemo extends Wengine {
         }
 
         ball = new BaseSprite(bm_ball, ScreenInfo.center.x - 10, ScreenInfo.height - 20 - ballSize, ballSize, ballSize);
+        ball.convertToDpSize();
         ball.setName("ball");
+        speed = (int)ScreenInfo.dp2px(speed);
         BaseAnimation a = new MoveAnimation(degree, speed);
         a.setTag("move");
         ball.addAnimation(a);
@@ -72,6 +80,7 @@ public class BrickDemo extends Wengine {
         addSprite(ball);
 
         bat = new BaseSprite(bm_bat, ScreenInfo.center.x - batWidth / 2, ScreenInfo.height - 20, batWidth, 10);
+        bat.convertToDpSize();
         bat.setName("bat");
         addSprite(bat);
     }
