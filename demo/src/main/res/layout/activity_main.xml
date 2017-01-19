@@ -12,25 +12,31 @@
     android:gravity="center">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <Button
             android:id="@+id/btn_brick"
             android:onClick="onClick"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="打砖块" />
         <Button
+            android:id="@+id/btn_airplane"
+            android:onClick="onClick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="打飞机"/>
+        <Button
             android:id="@+id/btn_bird"
             android:onClick="onClick"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="飞飞鸟"/>
         <Button
             android:id="@+id/btn_run"
             android:onClick="onClick"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="天天跑"/>
     </LinearLayout>
