@@ -122,9 +122,9 @@ public abstract class Wengine extends Activity implements Runnable, View.OnTouch
         texture = new Texture(this);
         redPaint = new Paint();
         redPaint.setColor(Color.RED);
-        logoPaint = new Paint();
-        logoPaint.setAntiAlias(true);
+        logoPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         logoPaint.setColor(logoTextColor);
+        logoPaint.setTextSize(ScreenInfo.dp2px(20));
         spritePool = new CopyOnWriteArrayList<>();
         spriteRecyclePool = new CopyOnWriteArrayList<>();
         collisions = new HashSet<>();
