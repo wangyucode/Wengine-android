@@ -26,7 +26,7 @@ public class BaseSprite implements SpriteAction {
     private boolean collidable = true;
     private Bitmap image;
 
-    private RectF boundRect,collisionRect;
+    private RectF boundRect, collisionRect;
     private float x, y, w, h, centerX, centerY;
 
     private int backgroundColor = Color.GREEN;
@@ -34,6 +34,7 @@ public class BaseSprite implements SpriteAction {
 
     private CopyOnWriteArrayList<BaseAnimation> animations;
     private boolean dieWhenOutScreen = true;
+    protected boolean isDpSize;
 
     public BaseSprite(float w, float h) {
         this(null, 0, 0, w, h);
@@ -60,12 +61,24 @@ public class BaseSprite implements SpriteAction {
         animations = new CopyOnWriteArrayList<>();
     }
 
+    /**
+     * 适配手机屏幕
+     * 将精灵的大小改为以dp为单位
+     * 坐标位置不变
+     */
+    public void convertToDpSize() {
+        isDpSize = true;
+        w = ScreenInfo.dp2px(w);
+        h = ScreenInfo.dp2px(h);
+        boundRect.set(x, y, x + w, y + h);
+    }
+
 
     @Override
     public void draw(Canvas c) {
-        if(image!=null){
-            c.drawBitmap(image,null,boundRect,bgPaint);
-        }else {
+        if (image != null) {
+            c.drawBitmap(image, null, boundRect, bgPaint);
+        } else {
             c.drawRect(boundRect, bgPaint);
         }
     }
@@ -82,7 +95,6 @@ public class BaseSprite implements SpriteAction {
 
     public void addAnimation(BaseAnimation a) {
         a.setDone(false); //call start
-        a.resetTimer();
         animations.add(a);
     }
 
@@ -90,9 +102,9 @@ public class BaseSprite implements SpriteAction {
         animations.clear();
     }
 
-    public BaseAnimation findAnimationByTag(Object tag){
+    public BaseAnimation findAnimationByTag(Object tag) {
         for (BaseAnimation a : animations) {
-            if(tag.equals(a.getTag())){
+            if (tag.equals(a.getTag())) {
                 return a;
             }
         }
@@ -116,7 +128,7 @@ public class BaseSprite implements SpriteAction {
             bound = BOUND_RIGHT;
         } else if (boundRect.bottom > ScreenInfo.screenRect.bottom) {
             bound = BOUND_BOTTOM;
-        }else{
+        } else {
             bound = BOUND_NULL;
         }
         return bound;
@@ -155,7 +167,10 @@ public class BaseSprite implements SpriteAction {
         return boundRect.width();
     }
 
-    public void setW(int w) {
+    public void setW(float w) {
+        if(isDpSize){
+            w = ScreenInfo.dp2px(w);
+        }
         boundRect.right = boundRect.left + w;
         this.w = w;
     }
@@ -182,7 +197,10 @@ public class BaseSprite implements SpriteAction {
         return boundRect.height();
     }
 
-    public void setH(int h) {
+    public void setH(float h) {
+        if(isDpSize){
+            h = ScreenInfo.dp2px(h);
+        }
         boundRect.bottom = boundRect.top + h;
         this.h = h;
     }
