@@ -13,9 +13,9 @@ public abstract class BaseAnimation {
     protected final String TAG = getClass().getSimpleName();
 
     protected Timer animTimer;
-    protected BaseSprite sprite;
     private boolean isDone;
     protected boolean isLoop;
+    protected boolean isFirstLoop;
 
     private Object tag;
 
@@ -31,6 +31,7 @@ public abstract class BaseAnimation {
 
     BaseAnimation() {
         animTimer = new Timer();
+        isFirstLoop = true;
     }
 
     public abstract void adjustChanges(BaseSprite sprite);
