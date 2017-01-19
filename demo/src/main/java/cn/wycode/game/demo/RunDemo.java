@@ -3,6 +3,7 @@ package cn.wycode.game.demo;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
@@ -13,6 +14,7 @@ import cn.wycode.wengine.animation.FrameAnimation;
 import cn.wycode.wengine.animation.JumpAnimation;
 import cn.wycode.wengine.animation.MoveAnimation;
 import cn.wycode.wengine.sprite.BaseSprite;
+import cn.wycode.wengine.sprite.TextSprite;
 import cn.wycode.wengine.utils.ScreenInfo;
 import cn.wycode.wengine.utils.Timer;
 
@@ -37,6 +39,8 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
     private int manHeight = 120;
     private int manWidth = 40;
 
+    float obsSize = 40;
+
     private JumpAnimation jumpAnimation;
     private MoveAnimation moveAnimation;
 
@@ -46,6 +50,8 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
 
     private int nextObstacle;
 
+
+    private TextSprite scoreSprite;
 
     @Override
     public void init() {
@@ -78,7 +84,8 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
         dst.set(ScreenInfo.width, 0, ScreenInfo.width * 2, ScreenInfo.height / 3);
         c_ground.drawBitmap(bm_ground, null, dst, null);
 
-        man = new BaseSprite(bm_man, ScreenInfo.center.x - manWidth, ScreenInfo.height * 2 / 3 - manHeight, manWidth, manHeight);
+        man = new BaseSprite(bm_man, ScreenInfo.center.x - manWidth, ScreenInfo.height * 2 / 3 - ScreenInfo.dp2px(manHeight), manWidth, manHeight);
+        man.convertToDpSize();
         man.setName("man");
 
         jumpAnimation = new JumpAnimation(jumpSpeed, ScreenInfo.height * 2 / 3);
@@ -91,13 +98,15 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
         addSprite(man);
 
         obs_timer = new Timer();
+
+        scoreSprite = new TextSprite(metre + "m", ScreenInfo.center.x, 16, 16, Color.WHITE);
+        addSprite(scoreSprite);
     }
 
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bg_2x, draw_bg_rect, bg_rect, null);
         canvas.drawBitmap(ground_2x, draw_ground_rect, ground_rect, null);
-        canvas.drawText(metre + "m", ScreenInfo.center.x, redPaint.getTextSize(), redPaint);
     }
 
     @Override
@@ -119,10 +128,10 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
         draw_ground_rect.set(ground_left, draw_ground_rect.top, ScreenInfo.width + ground_left, draw_ground_rect.bottom);
 
         metre = (int) (bg_timer.getElapseNotReset() / 1000f * 2);
+        scoreSprite.setText(metre + "m");
 
-
-        moveAnimation = new MoveAnimation(180, ground_seed);
-        if (obs_timer.getElapseNotReset() > 4000+ random.nextInt(4000)) {
+        if (obs_timer.getElapseNotReset() > 4000 + random.nextInt(4000)) {
+            moveAnimation = new MoveAnimation(180, ground_seed);
             BaseSprite obstacle = null;
             for (BaseSprite s : spriteRecyclePool) {
                 if ("obstacle".equals(s.getName())) {
@@ -134,11 +143,12 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
                     break;
                 }
             }
+
             if (obstacle == null) {
-                obstacle = new BaseSprite(ScreenInfo.width - 1, ScreenInfo.height * 2 / 3 - 40, 40, 40);
+                obstacle = new BaseSprite(ScreenInfo.width - 1, ScreenInfo.height * 2 / 3 - ScreenInfo.dp2px(obsSize), obsSize, obsSize);
+                obstacle.convertToDpSize();
                 obstacle.setName("obstacle");
             }
-
             obstacle.addAnimation(moveAnimation);
             addSprite(obstacle);
             obs_timer.reset();
