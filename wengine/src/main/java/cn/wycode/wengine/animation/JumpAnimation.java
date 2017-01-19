@@ -8,7 +8,7 @@ import cn.wycode.wengine.sprite.BaseSprite;
  */
 
 public class JumpAnimation extends BaseAnimation {
-    private float g = 200;
+    private float g = 300;
     private float v;
     private float groundY;
 
@@ -21,6 +21,11 @@ public class JumpAnimation extends BaseAnimation {
 
     @Override
     public void adjustChanges(BaseSprite sprite) {
+        if(isFirstLoop){
+            animTimer.reset();
+            isFirstLoop = false;
+            return;
+        }
         float t = animTimer.getElapse() / 1000f;
         v += g * t;
         float y = sprite.getY() + v * t;
