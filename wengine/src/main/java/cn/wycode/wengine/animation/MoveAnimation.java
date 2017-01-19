@@ -41,12 +41,13 @@ public class MoveAnimation extends BaseAnimation {
 
     @Override
     public void adjustChanges(BaseSprite sprite) {
-        if (this.sprite == null) {
-            this.sprite = sprite;
-            this.startX = sprite.getX();
-            this.startY = sprite.getY();
+        if(isFirstLoop){
             animTimer.reset();
+            isFirstLoop = false;
+            return;
         }
+        this.startX = sprite.getX();
+        this.startY = sprite.getY();
         double vX, vY, x, y;
         long dt;
         switch (type) {
