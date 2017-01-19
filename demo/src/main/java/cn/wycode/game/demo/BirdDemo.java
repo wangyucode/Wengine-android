@@ -37,9 +37,9 @@ public class BirdDemo extends Wengine implements BaseAnimation.AnimationStateLis
     private int bg_left;
     private Timer bg_timer, pipe_timer;
     private int bg_seed = 100;
-    private int jumpSpeed = -200;
+    private int jumpSpeed = -100;
 
-    private int pipeSpeed = 100;
+    private int pipeSpeed = 150;
 
     private int birdHeight = 20;
 
@@ -56,6 +56,9 @@ public class BirdDemo extends Wengine implements BaseAnimation.AnimationStateLis
     public void init() {
         super.init();
         setShowFps(true);
+        jumpSpeed = (int) ScreenInfo.dp2px(jumpSpeed);
+        bg_seed = (int) ScreenInfo.dp2px(bg_seed);
+        pipeSpeed = (int) ScreenInfo.dp2px(pipeSpeed);
     }
 
     @Override
@@ -109,9 +112,10 @@ public class BirdDemo extends Wengine implements BaseAnimation.AnimationStateLis
 
         draw_bg_rect.set(bm_left, draw_bg_rect.top, bm_sky.getWidth() / 2 + bm_left, draw_bg_rect.bottom);
 
+        float time = ScreenInfo.width / ScreenInfo.dp2px(pipeSpeed);
         if (isJumping) {
 
-            if (pipe_timer.getElapseNotReset() > 2000 + random.nextInt(2000)) {
+            if (pipe_timer.getElapseNotReset() > time + time * random.nextFloat()) {
                 Pipe obstacleTop = null;
                 BaseSprite obstacleBottom = null;
                 for (BaseSprite s : spriteRecyclePool) {
@@ -157,7 +161,6 @@ public class BirdDemo extends Wengine implements BaseAnimation.AnimationStateLis
                 obstacleBottom.addAnimation(moveAnimation2);
                 addSprite(obstacleTop);
                 addSprite(obstacleBottom);
-                pipe_timer.reset();
             }
         }
         //分数更新

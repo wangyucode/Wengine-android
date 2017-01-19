@@ -57,6 +57,9 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
     public void init() {
         super.init();
         setShowFps(true);
+        jumpSpeed =(int) ScreenInfo.dp2px(jumpSpeed);
+        bg_seed =(int) ScreenInfo.dp2px(bg_seed);
+        ground_seed =(int) ScreenInfo.dp2px(ground_seed);
     }
 
     @Override

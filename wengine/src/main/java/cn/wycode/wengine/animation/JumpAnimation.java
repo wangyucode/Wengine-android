@@ -1,6 +1,7 @@
 package cn.wycode.wengine.animation;
 
 import cn.wycode.wengine.sprite.BaseSprite;
+import cn.wycode.wengine.utils.ScreenInfo;
 
 /**
  * Created by wy
@@ -17,11 +18,12 @@ public class JumpAnimation extends BaseAnimation {
         super();
         this.v = v0;
         this.groundY = groundY;
+        g = ScreenInfo.dp2px(g);
     }
 
     @Override
     public void adjustChanges(BaseSprite sprite) {
-        if(isFirstLoop){
+        if (isFirstLoop) {
             animTimer.reset();
             isFirstLoop = false;
             return;

@@ -26,7 +26,7 @@ public class BrickDemo extends Wengine {
     private BaseSprite ball, bat;
 
     private float degree = -32;
-    private int speed = 300;
+    private int speed = 100;
 
     private int lastReach = BaseSprite.BOUND_NULL;
 
@@ -34,13 +34,14 @@ public class BrickDemo extends Wengine {
     private float brickHeight = 20;
     private int batWidth = 80;
 
-    private Bitmap bm_ball, bm_brick, bm_bat     ;
+    private Bitmap bm_ball, bm_brick, bm_bat;
 
     @Override
     public void init() {
         super.init();
         setShowFps(true);
         setBackgroundColor(Color.parseColor("#4C7C4A"));
+        speed = (int) ScreenInfo.dp2px(speed);
     }
 
     @Override
@@ -53,12 +54,10 @@ public class BrickDemo extends Wengine {
         int row = 8;
         int column = 6;
         float gap = 2; //(dp)
+        gap = ScreenInfo.dp2px(gap);
         float w = (ScreenInfo.width - ((column + 1) * gap)) / column;
-
         //根据屏幕宽度修正gap
-        gap = ScreenInfo.dp2px(gap);
         gap += (ScreenInfo.width - w * column - gap * (column + 1)) / (column + 1);
-        gap = ScreenInfo.dp2px(gap);
 
         brickHeight = ScreenInfo.dp2px(brickHeight);
         for (int i = 0; i < row; i++) {
@@ -69,17 +68,18 @@ public class BrickDemo extends Wengine {
             }
         }
 
-        ball = new BaseSprite(bm_ball, ScreenInfo.center.x - 10, ScreenInfo.height - 20 - ballSize, ballSize, ballSize);
+        ball = new BaseSprite(bm_ball, ScreenInfo.center.x - 10, ScreenInfo.height - ScreenInfo.dp2px(40) - ballSize, ballSize, ballSize);
         ball.convertToDpSize();
         ball.setName("ball");
-        speed = (int)ScreenInfo.dp2px(speed);
+        speed = (int) ScreenInfo.dp2px(speed);
         BaseAnimation a = new MoveAnimation(degree, speed);
         a.setTag("move");
         ball.addAnimation(a);
         ball.setDieWhenOutScreen(false);
         addSprite(ball);
 
-        bat = new BaseSprite(bm_bat, ScreenInfo.center.x - batWidth / 2, ScreenInfo.height - 20, batWidth, 10);
+        bat = new BaseSprite(bm_bat, ScreenInfo.center.x - batWidth / 2, ScreenInfo.height - ScreenInfo.dp2px(20), batWidth, 10);
+        bat.setBackgroundColor(Color.parseColor("#ff9800"));
         bat.convertToDpSize();
         bat.setName("bat");
         addSprite(bat);
@@ -135,7 +135,7 @@ public class BrickDemo extends Wengine {
     public void collided(BaseSprite a, BaseSprite b) {
         MoveAnimation animation = (MoveAnimation) ball.findAnimationByTag("move");
         if (a.getName().equals("bat") || b.getName().equals("bat")) {
-            degree = -degree + ball.getCenterX() - (a == ball ? b.getCenterX() : a.getCenterX());
+            degree = -degree + random.nextInt(40) - 20;
             animation.setDegree(degree);
             return;
         }
