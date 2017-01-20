@@ -50,7 +50,7 @@ public class Texture {
         return Bitmap.createBitmap(temp,x,y,w,h);
     }
 
-    public Bitmap Rotate(Bitmap src,float angle){
+    public Bitmap rotate(Bitmap src,float angle){
         Matrix m = new Matrix();
         m.setRotate(angle);
         return Bitmap.createBitmap(src,0,0,src.getWidth(),src.getHeight(),m,true);
