@@ -28,7 +28,8 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
     private final String TAG = getClass().getSimpleName();
 
     private BaseSprite man;
-    private Bitmap bm_bg, bm_ground, bg_2x, ground_2x, bm_man;
+    private Bitmap bm_bg, bm_ground, bm_bg_2x, bm_ground_2x, bm_man;
+    private Bitmap[] bm_runFrames;
     private Rect bg_rect, draw_ground_rect, ground_rect, draw_bg_rect;
     private int bg_left, ground_left;
     private Timer bg_timer, obs_timer, coin_timer;
@@ -48,18 +49,15 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
 
     private int metre;
 
-    private int nextObstacle;
-
-
     private TextSprite scoreSprite;
 
     @Override
     public void init() {
         super.init();
         setShowFps(true);
-        jumpSpeed =(int) ScreenInfo.dp2px(jumpSpeed);
-        bg_seed =(int) ScreenInfo.dp2px(bg_seed);
-        ground_seed =(int) ScreenInfo.dp2px(ground_seed);
+        jumpSpeed = (int) ScreenInfo.dp2px(jumpSpeed);
+        bg_seed = (int) ScreenInfo.dp2px(bg_seed);
+        ground_seed = (int) ScreenInfo.dp2px(ground_seed);
     }
 
     @Override
@@ -73,15 +71,15 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
         ground_rect = new Rect(0, ScreenInfo.height * 2 / 3, ScreenInfo.width, ScreenInfo.height);
         draw_ground_rect = new Rect(ground_left, 0, ScreenInfo.width, ScreenInfo.height / 3);
 
-        bg_2x = Bitmap.createBitmap(ScreenInfo.width * 4, ScreenInfo.height * 2 / 3, Bitmap.Config.ARGB_8888);
-        Canvas c_bg = new Canvas(bg_2x);
+        bm_bg_2x = Bitmap.createBitmap(ScreenInfo.width * 4, ScreenInfo.height * 2 / 3, Bitmap.Config.ARGB_8888);
+        Canvas c_bg = new Canvas(bm_bg_2x);
         Rect dst = new Rect(0, 0, ScreenInfo.width * 2, ScreenInfo.height * 2 / 3);
         c_bg.drawBitmap(bm_bg, null, dst, null);
         dst.set(ScreenInfo.width * 2, 0, ScreenInfo.width * 4, ScreenInfo.height * 2 / 3);
         c_bg.drawBitmap(bm_bg, null, dst, null);
 
-        ground_2x = Bitmap.createBitmap(ScreenInfo.width * 2, ScreenInfo.height / 3, Bitmap.Config.ARGB_8888);
-        Canvas c_ground = new Canvas(ground_2x);
+        bm_ground_2x = Bitmap.createBitmap(ScreenInfo.width * 2, ScreenInfo.height / 3, Bitmap.Config.ARGB_8888);
+        Canvas c_ground = new Canvas(bm_ground_2x);
         dst.set(0, 0, ScreenInfo.width, ScreenInfo.height / 3);
         c_ground.drawBitmap(bm_ground, null, dst, null);
         dst.set(ScreenInfo.width, 0, ScreenInfo.width * 2, ScreenInfo.height / 3);
@@ -95,8 +93,8 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
         jumpAnimation.setTag("jump");
         jumpAnimation.setStateListener(this);
 
-        Bitmap[] runFrames = new Bitmap[]{texture.loadTexture("img/man1.png"), texture.loadTexture("img/man2.png")};
-        FrameAnimation frameAnimation = new FrameAnimation(runFrames, 500);
+        bm_runFrames = new Bitmap[]{texture.loadTexture("img/man1.png"), texture.loadTexture("img/man2.png")};
+        FrameAnimation frameAnimation = new FrameAnimation(bm_runFrames, 200);
         man.addAnimation(frameAnimation);
         addSprite(man);
 
@@ -108,8 +106,8 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(bg_2x, draw_bg_rect, bg_rect, null);
-        canvas.drawBitmap(ground_2x, draw_ground_rect, ground_rect, null);
+        canvas.drawBitmap(bm_bg_2x, draw_bg_rect, bg_rect, null);
+        canvas.drawBitmap(bm_ground_2x, draw_ground_rect, ground_rect, null);
     }
 
     @Override
@@ -197,6 +195,27 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
     }
 
     @Override
+    public void release() {
+        if (bm_bg != null)
+            bm_bg.recycle();
+        if (bm_bg_2x != null)
+            bm_bg_2x.recycle();
+        if (bm_ground != null)
+            bm_ground.recycle();
+        if (bm_ground_2x != null)
+            bm_ground_2x.recycle();
+        if (bm_man != null)
+            bm_man.recycle();
+        if (bm_bg != null) {
+            for (Bitmap b : bm_runFrames) {
+                if (b != null)
+                    b.recycle();
+            }
+            bm_runFrames = null;
+        }
+    }
+
+    @Override
     public void start() {
         jumpCount++;
     }
@@ -206,3 +225,4 @@ public class RunDemo extends Wengine implements BaseAnimation.AnimationStateList
         jumpCount = 0;
     }
 }
+
