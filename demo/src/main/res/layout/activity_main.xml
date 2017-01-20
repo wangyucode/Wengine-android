@@ -22,17 +22,23 @@
             android:layout_height="wrap_content"
             android:text="打砖块" />
         <Button
+            android:id="@+id/btn_bird"
+            android:onClick="onClick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="飞飞鸟"/>
+        <Button
             android:id="@+id/btn_airplane"
             android:onClick="onClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="打飞机"/>
         <Button
-            android:id="@+id/btn_bird"
+            android:id="@+id/btn_snake"
             android:onClick="onClick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="飞飞鸟"/>
+            android:text="贪吃蛇"/>
         <Button
             android:id="@+id/btn_run"
             android:onClick="onClick"
