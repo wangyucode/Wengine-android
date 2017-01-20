@@ -24,7 +24,7 @@ public class FrameAnimation extends BaseAnimation {
     public void adjustChanges(BaseSprite sprite) {
         if (animTimer.elapse(duration)) {
             sprite.setImage(frames[i % frames.length]);
+            i++;
         }
-        i++;
     }
 }
