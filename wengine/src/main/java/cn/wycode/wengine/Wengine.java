@@ -99,6 +99,12 @@ public abstract class Wengine extends Activity implements Runnable, View.OnTouch
      */
     public abstract void touch(MotionEvent event);
 
+    /**
+     * 释放资源
+     * onDestory()时回调
+     */
+    public abstract void release();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,6 +147,13 @@ public abstract class Wengine extends Activity implements Runnable, View.OnTouch
     protected void onPause() {
         super.onPause();
         isPause = true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        release();
+        isGaming = false;
     }
 
     @Override
@@ -224,7 +237,6 @@ public abstract class Wengine extends Activity implements Runnable, View.OnTouch
                 }
             }
         }
-        finish();
     }
 
     public void pause() {
