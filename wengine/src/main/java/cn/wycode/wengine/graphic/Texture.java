@@ -3,6 +3,7 @@ package cn.wycode.wengine.graphic;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,5 +48,11 @@ public class Texture {
     public Bitmap loadTexture(String file,int x,int y,int w,int h) {
         Bitmap temp = loadTexture(file);
         return Bitmap.createBitmap(temp,x,y,w,h);
+    }
+
+    public Bitmap Rotate(Bitmap src,float angle){
+        Matrix m = new Matrix();
+        m.setRotate(angle);
+        return Bitmap.createBitmap(src,0,0,src.getWidth(),src.getHeight(),m,true);
     }
 }
