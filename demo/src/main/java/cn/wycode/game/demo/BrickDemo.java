@@ -26,7 +26,7 @@ public class BrickDemo extends Wengine {
     private BaseSprite ball, bat;
 
     private float degree = -32;
-    private int speed = 100;
+    private int speed = 150;
 
     private int lastReach = BaseSprite.BOUND_NULL;
 
@@ -34,7 +34,7 @@ public class BrickDemo extends Wengine {
     private float brickHeight = 20;
     private int batWidth = 80;
 
-    private Bitmap bm_ball, bm_brick, bm_bat;
+    private Bitmap bm_ball, bm_brick;
 
     @Override
     public void init() {
@@ -49,7 +49,6 @@ public class BrickDemo extends Wengine {
 
         bm_ball = texture.loadTexture("img/ball.png");
         bm_brick = texture.loadTexture("img/brick.png");
-        bm_bat = texture.loadTexture("img/bat.png");
 
         int row = 8;
         int column = 6;
@@ -78,7 +77,7 @@ public class BrickDemo extends Wengine {
         ball.setDieWhenOutScreen(false);
         addSprite(ball);
 
-        bat = new BaseSprite(bm_bat, ScreenInfo.center.x - batWidth / 2, ScreenInfo.height - ScreenInfo.dp2px(20), batWidth, 10);
+        bat = new BaseSprite(ScreenInfo.center.x - batWidth / 2, ScreenInfo.height - ScreenInfo.dp2px(20), batWidth, 10);
         bat.setBackgroundColor(Color.parseColor("#ff9800"));
         bat.convertToDpSize();
         bat.setName("bat");
@@ -135,7 +134,7 @@ public class BrickDemo extends Wengine {
     public void collided(BaseSprite a, BaseSprite b) {
         MoveAnimation animation = (MoveAnimation) ball.findAnimationByTag("move");
         if (a.getName().equals("bat") || b.getName().equals("bat")) {
-            degree = -degree + random.nextInt(40) - 20;
+            degree = -degree + (ball.getCenterX() - bat.getCenterX()) / (bat.getW() / 2f) * 30;
             animation.setDegree(degree);
             return;
         }
@@ -162,5 +161,13 @@ public class BrickDemo extends Wengine {
     @Override
     public void touch(MotionEvent event) {
         bat.setX(event.getX() - bat.getW() / 2);
+    }
+
+    @Override
+    public void release() {
+        if (bm_ball != null)
+            bm_ball.recycle();
+        if (bm_brick != null)
+            bm_brick.recycle();
     }
 }
