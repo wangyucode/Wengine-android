@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btn_airplane:
                 i.setClass(this,AirplaneDemo.class);
                 break;
+            case R.id.btn_snake:
+                i.setClass(this,SnakeDemo.class);
+                break;
         }
         startActivity(i);
     }
