@@ -33,11 +33,12 @@ public class BirdDemo extends Wengine implements BaseAnimation.AnimationStateLis
 
     private BaseSprite bird;
     private Bitmap bm_sky, bm_bird;
+    private Bitmap[] bm_runFrames;
     private Rect draw_bg_rect, rect_over, rect_over_dst;
     private int bg_left;
     private Timer bg_timer, pipe_timer;
     private int bg_seed = 100;
-    private int jumpSpeed = -100;
+    private int jumpSpeed = -200;
 
     private int pipeSpeed = 150;
 
@@ -77,13 +78,13 @@ public class BirdDemo extends Wengine implements BaseAnimation.AnimationStateLis
         jumpAnimation.setTag("jump");
         jumpAnimation.setStateListener(this);
 
-        Bitmap[] runFrames = new Bitmap[]{texture.loadTexture("img/man1.png"), texture.loadTexture("img/man2.png")};
-        FrameAnimation frameAnimation = new FrameAnimation(runFrames, 500);
+        bm_runFrames = new Bitmap[]{texture.loadTexture("img/man1.png"), texture.loadTexture("img/man2.png")};
+        FrameAnimation frameAnimation = new FrameAnimation(bm_runFrames, 500);
         bird.addAnimation(frameAnimation);
         addSprite(bird);
 
         bg_timer = new Timer();
-        pipe_timer = new Timer();
+
 
         scoreSprite = new TextSprite("score:" + score, ScreenInfo.center.x, 16, 16, Color.WHITE);
         addSprite(scoreSprite);
@@ -100,6 +101,10 @@ public class BirdDemo extends Wengine implements BaseAnimation.AnimationStateLis
 
     @Override
     public void update() {
+        if (pipe_timer == null) {
+            pipe_timer = new Timer();
+            return;
+        }
         long elapsed = bg_timer.getElapse();
         bg_left += elapsed / 1000f * bg_seed;
         if (bg_left > ScreenInfo.width * 2) {
@@ -112,9 +117,9 @@ public class BirdDemo extends Wengine implements BaseAnimation.AnimationStateLis
 
         draw_bg_rect.set(bm_left, draw_bg_rect.top, bm_sky.getWidth() / 2 + bm_left, draw_bg_rect.bottom);
 
-        float time = ScreenInfo.width / ScreenInfo.dp2px(pipeSpeed);
-        if (isJumping) {
+        float time = ScreenInfo.width / ScreenInfo.dp2px(pipeSpeed) * 1000;
 
+        if (isJumping) {
             if (pipe_timer.getElapseNotReset() > time + time * random.nextFloat()) {
                 Pipe obstacleTop = null;
                 BaseSprite obstacleBottom = null;
@@ -150,7 +155,7 @@ public class BirdDemo extends Wengine implements BaseAnimation.AnimationStateLis
                 //上部管子的高度随机(80~160dp)
                 obstacleTop.setH(100 + random.nextInt(100));
                 //上下管子的间距，控制了难度
-                float gap = ScreenInfo.dp2px(100);
+                float gap = ScreenInfo.dp2px(birdHeight * 5);
                 float topObsBottom = ScreenInfo.dp2px(obstacleTop.getH());
                 //重新设置下部管子的位置(px) = 上部管子最下+间距
                 obstacleBottom.setY(topObsBottom + gap);
@@ -161,6 +166,7 @@ public class BirdDemo extends Wengine implements BaseAnimation.AnimationStateLis
                 obstacleBottom.addAnimation(moveAnimation2);
                 addSprite(obstacleTop);
                 addSprite(obstacleBottom);
+                pipe_timer.reset();
             }
         }
         //分数更新
@@ -194,6 +200,22 @@ public class BirdDemo extends Wengine implements BaseAnimation.AnimationStateLis
                     bird.addAnimation(jumpAnimation);
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void release() {
+        if (bm_sky != null)
+            bm_sky.recycle();
+        if (bm_bird != null)
+            bm_bird.recycle();
+        if (bm_runFrames != null) {
+            for (Bitmap b : bm_runFrames) {
+                if (b != null) {
+                    b.recycle();
+                }
+            }
+            bm_runFrames = null;
         }
     }
 
