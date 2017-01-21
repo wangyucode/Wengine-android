@@ -74,7 +74,7 @@ public class AirplaneDemo extends Wengine {
         airplane.convertToDpSize();
         airplane.setName("airplane");
 
-        bm_enemy = texture.Rotate(bm_airplane, 180);
+        bm_enemy = texture.rotate(bm_airplane, 180);
 
         addSprite(airplane);
 
@@ -172,6 +172,7 @@ public class AirplaneDemo extends Wengine {
         if ("enemy".equals(a.getName())) {
             if ("bullet".equals(b.getName())) {
                 a.setAlive(false);
+                b.setAlive(false);
                 score += 100;
             } else if ("airplane".equals(b.getName())) {
                 gameOver();
@@ -180,6 +181,7 @@ public class AirplaneDemo extends Wengine {
         if ("enemy".equals(b.getName())) {
             if ("bullet".equals(a.getName())) {
                 b.setAlive(false);
+                a.setAlive(false);
                 score += 100;
             } else if ("airplane".equals(a.getName())) {
                 gameOver();
