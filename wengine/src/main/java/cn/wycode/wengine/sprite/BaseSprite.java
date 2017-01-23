@@ -30,7 +30,7 @@ public class BaseSprite implements SpriteAction {
     private float x, y, w, h, centerX, centerY;
 
     private int backgroundColor = Color.GREEN;
-    private Paint bgPaint;
+    protected Paint bgPaint;
 
     private CopyOnWriteArrayList<BaseAnimation> animations;
     private boolean dieWhenOutScreen = true;
